@@ -537,3 +537,155 @@ If incorrect syntax is added directly using `vim`, sudo may stop working complet
 ## Screenshot
 
 ![Command Specific Sudo](screenshots/command_specific_sudo.png)
+
+## Step 9: User Decommissioning Process
+
+When an employee leaves the company, the user account should be secured properly instead of deleting it immediately.
+
+This helps in:
+- Preventing unauthorized access
+- Preserving important user data
+- Maintaining backup for auditing or recovery
+
+---
+
+## Lock the User Account
+
+Disable login access for the user:
+
+```bash
+usermod -L new-user
+```
+
+---
+
+## Purpose
+
+- `-L` locks the user password
+- The user will no longer be able to login to the system
+- Existing files and data remain unchanged
+
+---
+
+## Remove User from Secondary Groups
+
+Remove the user from unnecessary secondary groups:
+
+```bash
+gpasswd -d new-user testing
+```
+
+---
+
+## Purpose
+
+- Removes `new-user` from the `testing` group
+- Used to revoke additional permissions
+
+---
+
+## Reset Primary Group
+
+Change the primary group back to the user's default group:
+
+```bash
+usermod -g new-user new-user
+```
+
+---
+
+## Purpose
+
+- Reassigns the user's primary group to `new-user`
+- Helps clean up access before account removal
+
+---
+
+# Backup User Home Directory
+
+Before deleting a user, it is recommended to take a backup of the user's home directory.
+
+---
+
+## Create Archive Using `tar`
+
+Example directory:
+
+```text
+devops/
+```
+
+Create compressed archive:
+
+```bash
+tar -cf devops.tar.gz devops
+```
+
+---
+
+## Extract Archive
+
+```bash
+tar -xf devops.tar.gz
+```
+
+---
+
+## Remove Empty Directory
+
+```bash
+rmdir devops/
+```
+
+---
+
+## Remove Directory Recursively
+
+```bash
+rm -r devops
+```
+
+---
+
+## Extract Archive Again
+
+```bash
+tar -xf devops.tar.gz
+```
+
+---
+
+## Backup User Home Directory
+
+Create backup archive of the user's home directory:
+
+```bash
+tar -cf /root/new-user.tar.gz /home/new-user
+```
+
+---
+
+## Understanding the Command
+
+| Option | Meaning |
+|---|---|
+| `tar` | Archive utility in Linux |
+| `-c` | Create archive |
+| `-f` | Specify archive file name |
+| `/root/new-user.tar.gz` | Backup archive file |
+| `/home/new-user` | User home directory being backed up |
+
+---
+
+## Notes
+
+- `tar` is commonly used for backups in Linux
+- `.tar.gz` archives help store and transfer files efficiently
+- User data should always be backed up before deleting accounts
+
+---
+
+
+
+
+
